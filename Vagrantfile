@@ -1,11 +1,13 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-HOST_IP = "10.152.152.11"
-GWVMBOX = 'ephillips/whonix-gateway'
 WSVMBOX = 'ephillips/whonix-workstation'
+GWVMBOX = 'ephillips/whonix-gateway'
+HOST_IP = "10.152.152.10"
+WSVBNME = "whonix-workstation"
+GWVBNME = "whonix-gateway"
 WSMEMOR = 4096
-GWMEMOR = 196
+GWMEMOR = 512
 WSCORES = 8
 GWCORES = 2
 
@@ -18,7 +20,8 @@ Vagrant.configure(2) do |config|
         vb.customize ['modifyvm', :id, '--cpus', GWCORES]
         vb.gui = false
       end
-  
+
+      gw.vm.hostname = GWVBNME
       gw.vm.network "private_network", auto_config: false,
         virtualbox__intnet: "Whonix", adapter: 2
   
@@ -40,8 +43,9 @@ Vagrant.configure(2) do |config|
         vb.customize ['modifyvm', :id, '--cpus', WSCORES]
         vb.gui = false
       end
-      ws.vm.boot_timeout = 60
-  
+      ws.vm.boot_timeout = 160
+
+      ws.vm.hostname = WSVBNME
       ws.vm.network "private_network", ip: HOST_IP, 
         virtualbox__intnet: "Whonix", adapter: 1
       ws.vm.network "forwarded_port", guest: 22, host: 2200,
@@ -52,5 +56,4 @@ Vagrant.configure(2) do |config|
     end
   
     config.vm.synced_folder ".", "/vagrant", disabled: true
-    config.vbguest.auto_update = false
   end

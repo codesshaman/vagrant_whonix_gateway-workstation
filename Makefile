@@ -1,4 +1,4 @@
-name = CentOS 8
+name = Whonix Gateway + Workstation
 
 NO_COLOR=\033[0m		# Color Reset
 COLOR_OFF='\e[0m'       # Color Off
@@ -82,5 +82,6 @@ clean: down
 fclean:
 	@printf "$(ERROR_COLOR)==== Force destroy configurations ====$(NO_COLOR)\n"
 	@vagrant destroy --force
+	@bash rm -rf .vagrant
 
 .PHONY	: all help build down re ps clean fclean
